@@ -1,0 +1,28 @@
+{
+  "name": "thesaurize",
+  "version": "1.0.0",
+  "description": "Replaces words in a string with random synonyms.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OrionSuperman/thesaurize.git"
+  },
+  "keywords": [
+    "thesaurus",
+    "synonym",
+    "fun"
+  ],
+  "author": "OrionSuperman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OrionSuperman/thesaurize/issues"
+  },
+  "homepage": "https://github.com/OrionSuperman/thesaurize#readme",
+  "dependencies": {
+    "pluralize": "^7.0.0",
+    "thesaurus": "0.0.0"
+  }
+}
