@@ -26,7 +26,7 @@ function thesaurize(words, opts = {}){
             if(customThesWord){
                 wordComponents.synonym = customThesWord;
             } else {
-                wordComponents.synonym = getThesaurusWord(wordComponents.baseWord);
+                wordComponents.synonym = getThesaurusWord(wordComponents);
             }
 
             return constructWord(wordComponents);
@@ -35,8 +35,11 @@ function thesaurize(words, opts = {}){
     
 }
 
-function getThesaurusWord(word){
-    let tWordArr = thesaurus.find(word.toLowerCase());
+function getThesaurusWord(wordComponents){
+    let tWordArr = thesaurus.find(wordComponents.baseWord.toLowerCase());
+    if(!tWordArr.length){
+        tWordArr = thesaurus.find(wordComponents.originalWord.toLowerCase());
+    }
     let tWord = chooseWord(tWordArr);
     return tWord ? tWord : word;
 }
@@ -101,7 +104,6 @@ function splitPunctuation(word){
 }
 
 function chooseWord(tWordArr){
-    console.log(tWordArr);
     return tWordArr.length ? tWordArr[Math.floor(Math.random()*tWordArr.length)] : false;
 }
 
