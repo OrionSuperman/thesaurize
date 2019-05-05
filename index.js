@@ -5,7 +5,7 @@ const _ = require('lodash');
 const commonArr =["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","I","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","go","see","no","way","could","my","than","been","call","who","its","now","did","get","come","made","may","part","i","me","his"];
 
 const customThesaurus = {
-    trump
+    "trump": trump();
 };
   
 function thesaurize(words, opts = {}){
@@ -101,7 +101,9 @@ function jsUcfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-let trump = [
+function trump() {
+
+    return [
         "Agent of Deranged Change ",
         "The Angry Cheeto",
         "Bag of Toxic Sludge",
@@ -287,6 +289,7 @@ let trump = [
         "YUGE Asshole",
         "YUGE Liar",
         "Zen Master of Hate"];
+};
 
 
 module.exports = thesaurize;
