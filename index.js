@@ -17,13 +17,14 @@ function thesaurize(words, opts = {}){
         .map(word => {
             let wordComponents = splitPunctuation(word);
             if(commonArr.includes(wordComponents.baseWord.toLowerCase())){
+                console.log("returning common word");
                 return word;
             }
         
             setWordProperties(wordComponents);
-            
-            if(customThesaurus[wordComponents.baseWord.toLowerCase()]){
-                wordComponents.synonym = getCustomThesaurusWord(wordComponents.baseWord.toLowerCase());
+            let customThesWord = getCustomThesaurusWord(wordComponents);
+            if(customThesWord){
+                wordComponents.synonym = customThesWord;
             } else {
                 wordComponents.synonym = getThesaurusWord(wordComponents.baseWord);
             }
@@ -40,8 +41,17 @@ function getThesaurusWord(word){
     return tWord ? tWord : word;
 }
 
-function getCustomThesaurusWord(word){
-    return chooseWord(customThesaurus[word.toLowerCase()]);
+function getCustomThesaurusWord(wordComponents){
+    console.log("hit");
+    let returnWord = '';
+    let customEntry = customThesaurus[wordComponents.originalWord.toLowerCase()]
+        || customThesaurus[wordComponents.baseWord.toLowerCase()]
+        || [];
+    console.log(customEntry);
+    if(customEntry.length){
+        returnWord = chooseWord(customEntry);
+    }
+    return returnWord;
 }
 
 function setWordProperties(wordComponents){
@@ -73,6 +83,7 @@ function constructWord(wordComponents){
 
 function splitPunctuation(word){
     let returnObj = {
+        originalWord: word,
         baseWord: word,
         punctuation: ["",""]
     };
@@ -90,6 +101,7 @@ function splitPunctuation(word){
 }
 
 function chooseWord(tWordArr){
+    console.log(tWordArr);
     return tWordArr.length ? tWordArr[Math.floor(Math.random()*tWordArr.length)] : false;
 }
 
