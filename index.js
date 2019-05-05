@@ -22,8 +22,8 @@ function thesaurize(words, opts = {}){
         
             setWordProperties(wordComponents);
             
-            if(customThesaurus[wordComponents.baseWord]){
-                wordComponents.synonym = getCustomThesaurusWord[wordComponents.baseWord];
+            if(customThesaurus[wordComponents.baseWord.toLowerCase()]){
+                wordComponents.synonym = getCustomThesaurusWord(wordComponents.baseWord.toLowerCase());
             } else {
                 wordComponents.synonym = getThesaurusWord(wordComponents.baseWord);
             }

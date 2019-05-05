@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/OrionSuperman/thesaurize#readme",
   "dependencies": {
+    "lodash": "^4.17.11",
     "pluralize": "^7.0.0",
     "thesaurus": "0.0.0"
   }
