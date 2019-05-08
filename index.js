@@ -17,7 +17,6 @@ function thesaurize(words, opts = {}){
         .map(word => {
             let wordComponents = splitPunctuation(word);
             if(commonArr.includes(wordComponents.baseWord.toLowerCase())){
-                console.log("returning common word");
                 return word;
             }
         
@@ -45,12 +44,10 @@ function getThesaurusWord(wordComponents){
 }
 
 function getCustomThesaurusWord(wordComponents){
-    console.log("hit");
     let returnWord = '';
     let customEntry = customThesaurus[wordComponents.originalWord.toLowerCase()]
         || customThesaurus[wordComponents.baseWord.toLowerCase()]
         || [];
-    console.log(customEntry);
     if(customEntry.length){
         returnWord = chooseWord(customEntry);
     }
