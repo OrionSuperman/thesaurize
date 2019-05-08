@@ -127,6 +127,7 @@ function trump() {
         "The Bush Basher",
         "The Bush Beater",
         "Bushmaster",
+        "Cadet Bone Spurs",
         "Captain Bluster",
         "Captain Crunch",
         "Captain Tantastic",
