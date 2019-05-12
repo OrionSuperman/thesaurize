@@ -1,6 +1,6 @@
 {
   "name": "thesaurize",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Replaces words in a string with random synonyms.",
   "main": "src/index.js",
   "scripts": {
