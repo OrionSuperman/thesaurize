@@ -11,11 +11,11 @@ chai.use(sinonChai);
 describe("index.js", () => {
     let index;
 
-    describe("happy path tests", () => {
-        beforeEach(() => {
-            index = rewire('./');
-        });
+    beforeEach(() => {
+        index = rewire('./');
+    });
 
+    describe("happy path tests", () => {
         it("changes words that are put in", () => {
             let testSentance = "Red, purple, and blue words are gybrysh\n and far from home";
             let result = index(testSentance);
@@ -23,39 +23,13 @@ describe("index.js", () => {
         });
 
         it("does not change common words or unknown words", () => {
-            let testSentance = "with the use for you,\n lskdjfajjje";
+            let testSentance = "with the! use for you,\n lskdjfajjje";
             let result = index(testSentance);
             expect(result).to.eql(testSentance);
         });
     });
 
     describe("unit testing", () => {
-        let thesaurus,
-            thesaurusStub,
-            thesaurusWordList,
-            pluralize,
-            pluralStatus,
-            pluralizeIsPluralStub,
-            pluralizeSingularStub,
-            pluralizePluralStub;
-
-        beforeEach(() => {
-            index = rewire('./');
-            thesaurusWordList = ["pinkie", "pie"];
-            thesaurusStub = sinon.stub().returns(thesaurusWordList);
-            thesaurus = index.__set__('thesaurus', {
-                "find": thesaurusStub
-            });
-
-            pluralizeIsPluralStub = sinon.stub().returns(pluralStatus);
-            pluralizeSingularStub = sinon.stub().returnsArg(0);
-            pluralizePluralStub = sinon.stub().returnsArg(0);
-            pluralize = index.__set__('pluralize', {
-                "isPlural": pluralizeIsPluralStub,
-                "singular": pluralizeSingularStub,
-                "plural": pluralizePluralStub
-            });
-        });
 
         describe("thesaurize()", () => {
             let thesaurize,
@@ -154,6 +128,112 @@ describe("index.js", () => {
                 let inputWord = "mirror";
                 expect(processWord(inputWord)).to.eql(inputWord);
             });
+        });
+
+        describe("findSynonym()", () => {
+            let findSynonym,
+                wordComponents,
+                getCustomThesaurusWordStub,
+                getThesaurusWordStub;
+
+            beforeEach(() => {
+                findSynonym = index.__get__("findSynonym");
+                wordComponents = {"baseWord": "Bubbles"};
+                getCustomThesaurusWordStub = sinon.stub();
+                getThesaurusWordStub = sinon.stub();
+            });
+
+            it("uses getCustomThesaurusWord return if it is present", () => {
+                let customWordReturn = "bookhorse";
+                getCustomThesaurusWordStub = sinon.stub().returns(customWordReturn);
+                index.__set__("getCustomThesaurusWord", getCustomThesaurusWordStub);
+                index.__set__("getThesaurusWord", getThesaurusWordStub);
+
+                let result = findSynonym(wordComponents);
+                expect(getCustomThesaurusWordStub).to.have.been.calledWith(wordComponents);
+                expect(getThesaurusWordStub).to.have.not.been.called;
+                expect(result).to.eql(customWordReturn);
+            });
+
+            it("uses getThesaurusWord return if there are no custom entries", () => {
+                let customWordReturn = "";
+                getCustomThesaurusWordStub = sinon.stub().returns(customWordReturn);
+                index.__set__("getCustomThesaurusWord", getCustomThesaurusWordStub);
+
+                let thesaurusWord = "bookfort";
+                getThesaurusWordStub = sinon.stub().returns(thesaurusWord);
+                index.__set__("getThesaurusWord", getThesaurusWordStub);
+
+                let result = findSynonym(wordComponents);
+                expect(getCustomThesaurusWordStub).to.have.been.calledWith(wordComponents);
+                expect(getThesaurusWordStub).to.have.been.calledWith(wordComponents);
+                expect(result).to.eql(thesaurusWord);
+            });
+
+            it("defaults to the baseWord if custom and normal synonyms are not found", () => {
+                let customWordReturn = "";
+                getCustomThesaurusWordStub = sinon.stub().returns(customWordReturn);
+                index.__set__("getCustomThesaurusWord", getCustomThesaurusWordStub);
+
+                let thesaurusWord = "";
+                getThesaurusWordStub = sinon.stub().returns(thesaurusWord);
+                index.__set__("getThesaurusWord", getThesaurusWordStub);
+
+                let result = findSynonym(wordComponents);
+                expect(getCustomThesaurusWordStub).to.have.been.calledWith(wordComponents);
+                expect(getThesaurusWordStub).to.have.been.calledWith(wordComponents);
+                expect(result).to.eql(wordComponents.baseWord);
+            });
+        });
+
+        describe("setWordProperties()", () => {
+            let setWordProperties;
+            beforeEach(() => {
+                setWordProperties = index.__get__("setWordProperties");
+            });
+
+            it("returns correct properties for a simple word", () => {
+                let word = "simple";
+                let expectedComponents = {
+                    "originalWord": word,
+                    "baseWord": word,
+                    "punctuation": ["",""],
+                    "isPlural": false,
+                    "isCommonWord": false
+                };
+                let wordComponents = setWordProperties(word);
+                expect(wordComponents).to.eql(expectedComponents);
+            });
+
+            it("returns correct properties for a capitalized word with punctuation", () => {
+                let word = "@@Complex!!";
+                let expectedComponents = {
+                    "originalWord": word,
+                    "baseWord": "complex",
+                    "punctuation": ["@@","!!"],
+                    "capitalize": true,
+                    "isPlural": false,
+                    "isCommonWord": false
+                };
+                let wordComponents = setWordProperties(word);
+                expect(wordComponents).to.eql(expectedComponents);
+            });
+
+            it("returns correct properties for plural word that is allcaps", () => {
+                let word = "RUNNERS";
+                let expectedComponents = {
+                    "originalWord": word,
+                    "baseWord": "runner",
+                    "punctuation": ["",""],
+                    "isPlural": true,
+                    "allCaps": true,
+                    "isCommonWord": false
+                };
+                let wordComponents = setWordProperties(word);
+                expect(wordComponents).to.eql(expectedComponents);
+            });
+
+
         });
     });
 

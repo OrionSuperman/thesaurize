@@ -26,7 +26,6 @@ function thesaurize(words, opts = {}) {
                 .join(' ');
         })
         .join('\n');
-
 }
 
 function processWord(word) {
@@ -49,8 +48,10 @@ function setWordProperties(word) {
     let wordComponents = splitPunctuation(word);
     if (wordComponents.baseWord === wordComponents.baseWord.toUpperCase()) {
         wordComponents.allCaps = true;
+        wordComponents.baseWord = wordComponents.baseWord.toLowerCase();
     } else if (wordComponents.baseWord.charAt(0) === wordComponents.baseWord.charAt(0).toUpperCase()) {
         wordComponents.capitalize = true;
+        wordComponents.baseWord = wordComponents.baseWord.toLowerCase();
     }
 
     if (pluralize.isPlural(wordComponents.baseWord) && isLetter(wordComponents.baseWord[wordComponents.baseWord.length - 2])) { // checking for apostrophe
