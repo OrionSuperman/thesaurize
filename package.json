@@ -2,6 +2,10 @@
   "name": "thesaurize",
   "version": "1.0.11",
   "description": "Replaces words in a string with random synonyms.",
+  "author": "Orion Supergan <OrionSuperman@gmail.com> (https://github.com/OrionSuperman)",
+  "contributors": [
+    "Victorio Berra <toryberra@gmail.com> (https://github.com/VictorioBerra)"
+  ],
   "main": "src/index.js",
   "scripts": {
     "test": "mocha $(find . -name '*.test.js' ! -ipath '*node_modules*')"
@@ -15,7 +19,6 @@
     "synonym",
     "fun"
   ],
-  "author": "OrionSuperman",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/OrionSuperman/thesaurize/issues"
